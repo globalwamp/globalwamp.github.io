@@ -32,9 +32,9 @@
         zoom: "zoom",
         description: "description"
       },
-      barra_class: '.barra',
-      barra_titulo_class: '.titulo',
-      barra_descripcion_class: '.descripcion'
+      bar_class: '.bar',
+      bar_title_class: '.title',
+      bar_descripcion_class: '.descripcion'
     };
 
     //Extending options:
@@ -167,13 +167,13 @@
           }
 
           if (grupos.center[0].title ) {
-            $(_this.opts.barra_class).show();
-            $(_this.opts.barra_class + ' ' + _this.opts.barra_titulo_class).html(grupos.center[0].titulo);
+            $(_this.opts.bar_class).show();
+            $(_this.opts.bar_class + ' ' + _this.opts.bar_title_class).html(grupos.center[0].title);
           }          
 
           if (grupos.center[0].description ) {
-            $(_this.opts.barra_class).show();
-            $(_this.opts.barra_class + ' ' + _this.opts.barra_descripcion_class).html(grupos.center[0].descripcion);
+            $(_this.opts.bar_class).show();
+            $(_this.opts.bar_class + ' ' + _this.opts.bar_descripcion_class).html(grupos.center[0].descripcion);
           }          
 
           deferred.resolve();
@@ -282,7 +282,7 @@
       
       $(_this.kml).each(function(k, kml) {
         $mapa.addKML({
-          nombre: kml.titulo,
+          nombre: kml.title,
           url: 'http://mapa.ign.gob.ar/mapa/proxy/?url=' + encodeURIComponent(kml.resource)
         });
       });
@@ -291,9 +291,9 @@
 
     alert: function (msg) {
       var _this = this;
-      $(_this.opts.barra_class).fadeIn();
-      $(_this.opts.barra_class + ' ' + _this.opts.barra_titulo_class).html("globalWAMP - Error en el mapa");
-      $(_this.opts.barra_class + ' ' + _this.opts.barra_descripcion_class).html(msg);
+      $(_this.opts.bar_class).fadeIn();
+      $(_this.opts.bar_class + ' ' + _this.opts.bar_title_class).html("globalWAMP - Error en el mapa");
+      $(_this.opts.bar_class + ' ' + _this.opts.bar_descripcion_class).html(msg);
     },
 
     parseCoordenadas: function  (texto, callback, context) {
