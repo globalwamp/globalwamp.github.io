@@ -11,6 +11,7 @@
     //Defaults:
     this.defaults = {
       source: '0AqdTbs1TYvZKdE10TFRsa1BISE50amVTeUVNUDVqNkE',
+      editable:false,
       vistaInicial: {
         lat: -34,
         lng: -59,
@@ -231,7 +232,7 @@
       var _this = this;
       var map_options = {};
 
-      $mapa = _this.$el;
+      var $mapa = _this.$el;
       if (_this.opts.vistaInicial.lat !== undefined) {
         map_options.center = [ _this.opts.vistaInicial.lat, _this.opts.vistaInicial.lng ];      
       }  
@@ -241,11 +242,13 @@
       }
       
       $mapa.leaflet(map_options);
+      var overlayTileUrl = 'http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png';
+      $mapa.data().plugin_leaflet.layerControl.addBaseLayer(new L.TileLayer(overlayTileUrl), 'B&W');
+      //$mapa.data().Lmap.addLayer(new L.TileLayer(overlayTileUrl));
 
       if (_this.opts.vistaInicial.layer !== undefined) {
         $mapa.capaBase( _this.opts.vistaInicial.layer );      
       }
-
 
       /*
       $(_this.wms).each(function(k,layer) {
@@ -265,20 +268,35 @@
           $("<h3 />").html(marker.title).appendTo($contenido);
           $("<div />").html(marker.description).appendTo($contenido);
 
-          var i = new L.icon( {
-            iconUrl: marker.layer,
-          });
-          $mapa.addMarker({
+          var marker_opts = {
             title: marker.title,
             icon: i,
             lat: latlng.lat,
             lng: latlng.lng,
             html: $contenido.html(),
-          });
+          };
+
+          if (marker.layer) {
+            var i = new L.icon( {
+              iconUrl: marker.layer,
+            });
+            marker_opts.icon = i;
+          }
+          $mapa.addMarker(marker_opts);
         
         });
 
       });
+      
+
+      if (_this.opts.editable) {
+        $mapa.data().Lmap.addControl(new L.Control.ViewCenter({$map: $mapa}));
+        $mapa.data().Lmap.addControl( new L.Control.Search({
+          layer: $mapa.data().plugin_leaflet.popupGroup,
+          initial: false}) );
+        $mapa.find('.bar').hide();
+        $mapa.enableMarkerDragging();
+      }
       
       $(_this.kml).each(function(k, kml) {
         $mapa.addKML({
